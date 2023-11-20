@@ -36,14 +36,14 @@ object InstructionsTypeL {
 }
 
 object InstructionsTypeI {
-  val addi  = 0.U
-  val slli  = 1.U
-  val slti  = 2.U
-  val sltiu = 3.U
-  val xori  = 4.U
-  val sri   = 5.U
-  val ori   = 6.U
-  val andi  = 7.U
+  val addi  = "b000".U
+  val slli  = "b001".U
+  val slti  = "b010".U
+  val sltiu = "b011".U
+  val xori  = "b100".U
+  val sri   = "b101".U
+  val ori   = "b110".U
+  val andi  = "b111".U
 }
 
 object InstructionsTypeS {
@@ -53,14 +53,14 @@ object InstructionsTypeS {
 }
 
 object InstructionsTypeR {
-  val add_sub = 0.U
-  val sll     = 1.U
-  val slt     = 2.U
-  val sltu    = 3.U
-  val xor     = 4.U
-  val sr      = 5.U
-  val or      = 6.U
-  val and     = 7.U
+  val add_sub = "b000".U
+  val sll     = "b001".U
+  val slt     = "b010".U
+  val sltu    = "b011".U
+  val xor     = "b100".U
+  val sr      = "b101".U
+  val or      = "b110".U
+  val and     = "b111".U
 }
 
 object InstructionsTypeM {
@@ -195,7 +195,8 @@ class InstructionDecode extends Module {
   )
 
   // lab3(InstructionDecode) begin
-
+  io.memory_read_enable := opcode === InstructionTypes.L
+  io.memory_write_enable := opcode === InstructionTypes.S
   // lab3(InstructionDecode) end
 
   io.wb_reg_write_source := MuxCase(
@@ -211,5 +212,5 @@ class InstructionDecode extends Module {
   io.reg_write_enable := (opcode === InstructionTypes.RM) || (opcode === InstructionTypes.I) ||
     (opcode === InstructionTypes.L) || (opcode === Instructions.auipc) || (opcode === Instructions.lui) ||
     (opcode === Instructions.jal) || (opcode === Instructions.jalr)
-  io.reg_write_address := rd
+  io.reg_write_address := io.instruction(11, 7)
 }

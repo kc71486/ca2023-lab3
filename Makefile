@@ -11,7 +11,3 @@ indent:
 	find . -name '*.scala' | xargs scalafmt
 	clang-format -i verilog/verilator/*.cpp
 	clang-format -i csrc/*.[ch]
-
-clean:
-	sbt clean
-	-$(MAKE) -C csrc clean
